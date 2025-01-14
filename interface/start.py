@@ -32,7 +32,6 @@ def serial_init():
             print(com_port)
         print()
         port = input("Enter serial port of nRF52840 using 'COM#' format:").upper()
-        # port = "COM3" #TESTING ENTRY--DELETE FOR FINAL
 
         # Attempt serial connection and clear buffers.
         try:
@@ -204,7 +203,7 @@ def data_collect(chs_hex, smp_hex):
                                 writer.writerow(data4)
 
 
-
+                            # Finds total sample time and rate
                             end_time = time.time()
                             time.sleep(0.1)
                             s_time = end_time - start_time
@@ -216,6 +215,7 @@ def data_collect(chs_hex, smp_hex):
 
                             ser_str = ""
 
+                            # Plots number of signals used.
                             if chs_hex == "01":
                                 fig, ax1 = plt.subplots(1, 1)
                                 data1 = sig_filt.filter_signal2(data1)
@@ -279,6 +279,7 @@ def data_collect(chs_hex, smp_hex):
                             # Break out of signal collection loop
                             menu.menu_top()
 
+                        # Splits received data into individual channels.
                         if ser_str == "ch1\r\n":
                             ser_bytes = cfg.ser.read_until()
                             ser_str = ser_bytes.decode()

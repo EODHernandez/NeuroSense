@@ -1,3 +1,5 @@
+# Test SPI device driver. Not currently used.
+
 description: Cirtec CSI080 Neural Impulse Sensor
 
 compatible: "csi080-spi"

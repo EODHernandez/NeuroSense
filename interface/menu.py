@@ -32,20 +32,21 @@ def menu_top():
     while True:
         entry = int(input("Which option? "))
 
+        # Match/Case used to select menu options
         match entry:
-            case 1:
+            case 1: # Go to register update function
                 reg_update()
 
-            case 2:
+            case 2: # Go to register read function
                 reg_read()
 
-            case 3:
+            case 3: # Go to data collection function
                 data_collect_menu()
 
-            case 4:
+            case 4: # Go to channel preset config function
                 config_chan()
 
-            case 5:
+            case 5: # Outputs UART buffer if not empty
                 print("\033c", end="")
 
                 if cfg.ser.in_waiting == 0:
@@ -56,19 +57,19 @@ def menu_top():
                 input("Press the 'Enter' key to continue...")
                 menu_top()
 
-            case 6:
+            case 6: # Clears UART buffer
                 print("\033c", end="")
                 start.serial_reset()
                 input("Press the 'Enter' key to continue...")
                 menu_top()
 
-            case 0:
+            case 0: # Exits program
                 print("Exiting")
                 time.sleep(1)
                 print("\033c", end="")
                 sys.exit()
 
-            case _:
+            case _: # Default case
                 print("Invalid selection, try again.\n")
 
 
@@ -79,8 +80,10 @@ def reg_read():
 
     print("Read Register\n")
 
+    # Pulls register name from reg_addr function
     reg = reg_addr()
 
+    # Sends command over UART
     print("\033c", end="")
     print(f"Reading value of {reg}.")
     send_str = cfg.READ_REG+cfg.REGS[reg]+cfg.NULL_VAL+cfg.TERM
@@ -92,11 +95,14 @@ def reg_update():
     print("\033c", end="")
     print("Update Register\n\n")
 
+    # Pulls register name from reg_addr function
     reg = reg_addr()
 
     loop_in = True
     loop_out = True
 
+    # Loops used to detect binary or hex inputs.
+    # Defaults to binary if either applies (1, 10, 11) 
     while loop_out:
         while loop_in:
 
@@ -125,7 +131,7 @@ def reg_update():
         else:
             loop_out = False
 
-
+    # Sends command over UART
     print(f"Updating {reg} to 0x{val_hex}.")
     send_str = cfg.UPDATE_REG+cfg.REGS[reg]+val_hex+cfg.TERM
     start.serial_write(send_str)
@@ -181,6 +187,7 @@ def data_collect_menu():
 
         print("\033c", end="")
 
+        # Selects number of channels to read from. 
         print("How many channels to collect from?")
         chan = int(input("Enter an integer from 1-4: "))
         print()
@@ -189,6 +196,7 @@ def data_collect_menu():
             print(f"Value must be 1-4. You entered {chan}.\n")
             input("Press the 'Enter' key to continue...")
 
+        # Enter number of samples to collect
         else:
             print("How many samples, in hundreds, to collect?")
             samp = int(input("Enter an integer from 1-255: "))
@@ -198,11 +206,13 @@ def data_collect_menu():
                 print(f"Value must be 1-255. You entered {samp}.\n")
                 input("Press the 'Enter' key to continue...")
 
+            # Estimates collection time and prompts for confirmation
             else:
                 print(f"Collect {samp*100:,} samples from {chan} channels?\n"
                     f"(approx. {(samp*100)/((-30*chan)+174):.2f} seconds)")
                 check = input('Enter "Y" or "N": ').upper()
 
+                # Sends command over UART
                 if check == "Y":
                     samp_hex = f"{samp:02x}".upper()
                     chs_hex = f"{chan:02x}".upper()
@@ -214,6 +224,9 @@ def data_collect_menu():
 def config_chan():
     """ Performs a preset configuration of selected channel """
     print("\033c", end="")
+
+    # Intended to select number of channels to configure.
+    # Removed input to streamline testing.
 
     # chs = int(input("Which channel? "))
     chs = 4
