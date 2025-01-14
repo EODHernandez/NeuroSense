@@ -1,0 +1,6 @@
+description: Cirtec CSI080 Neural Impulse Sensor
+
+compatible: "csi080-spi"
+
+include: "spi-device.yaml"
+
