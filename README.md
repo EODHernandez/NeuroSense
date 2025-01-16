@@ -36,15 +36,25 @@ diagram is below. All pins can be re-assigned as needed using the overlay file.
 nRF52840 output voltage can be adjusted downward, with some difficulty, if the non-HV pins are to be utilized.
 
 nRF52840    <----->     CSI080
+
 GND         <----->     CN3 Pin 1
+
 GND         <----->     CN17 Pin 1
+
 5V          <----->     CN3 Pin 2
+
 VDD         <----->     CN17 Pin 2
+
 P1.10       <----->     RST_HV
+
 P1.11       <----->     CLK_HV
+
 P1.12       <----->     CSN_HV
+
 P1.13       <----->     SDI_HV
+
 P1.14       <----->     SDO_HV
+
 P1.15       <----->     SCK_HV
 
     I can be contacted via GitHub (EODHernandez) with any questions.
